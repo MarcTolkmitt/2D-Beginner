@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     public float timeAfterHeal = 1.0f;
     bool isHealing;
     float healingCooldown;
+    // additions for the animator
+    Animator animator;
+    Vector2 moveDirection = new Vector2( 0, 0 );
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +47,8 @@ public class PlayerController : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
         // Healthsystem
         currentHealth = maxHealth - 1;
+        // animator
+        animator = GetComponent<Animator>();
 
     }   // Ende: void Start
 
@@ -79,10 +84,25 @@ public class PlayerController : MonoBehaviour
     {
         // die Bewegung ausführen mit Strecke pro Zeiteinheit
         float deltaZeit = Time.deltaTime;
-        position = ( Vector2 ) rigidbody2d.position +
+        Vector2 locMove =
             ( move * 0.1f * geschw * deltaZeit ) +
             ( arrow * 0.1f * geschw * deltaZeit ) +
             ( xbox * 0.1f * geschw * deltaZeit );
+        // for the animator concerning 'locMove'
+        if ( !Mathf.Approximately( locMove.x, 0.0f )
+            || !Mathf.Approximately( locMove.y, 0.0f ) )
+        {
+            moveDirection.Set( locMove.x, locMove.y );
+            moveDirection.Normalize();  // only working for pointing a direction
+
+        }
+        animator.SetFloat( "Move X", moveDirection.x );
+        animator.SetFloat( "Move Y", moveDirection.y );
+        animator.SetFloat( "Speed", locMove.magnitude ); // on the normalized Vector
+
+        // noew for the rest 
+        position = ( Vector2 ) rigidbody2d.position + locMove;
+            
         // die Bewegung speichern
         rigidbody2d.MovePosition( position );
 

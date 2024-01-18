@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4463867224673228293}
   - component: {fileID: 7577714517183832062}
   - component: {fileID: 2941526550395607124}
+  - component: {fileID: 3609583352255162876}
   m_Layer: 0
   m_Name: Ducko
   m_TagString: Untagged
@@ -248,6 +249,8 @@ MonoBehaviour:
       m_Action: Xbox
       m_Flags: 8
     m_Flags: 0
+  timeInvincible: 2
+  timeAfterHeal: 1
 --- !u!50 &7577714517183832062
 Rigidbody2D:
   serializedVersion: 4
@@ -310,7 +313,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.37982732}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.77, y: 2.21}
     newSize: {x: 0.77, y: 2.21}
     adaptiveTilingThreshold: 0.5
@@ -320,3 +323,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.77, y: 0.75965464}
   m_EdgeRadius: 0
+--- !u!95 &3609583352255162876
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7444013256515358043}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 34d36e1bead33a942930d6f3d41aa8fa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -9,11 +9,12 @@ public class EnemyController : MonoBehaviour
     public float minimaleDistanz = 0.1f;
     Rigidbody2D rigidbody2d;
     Vector2 position;
-    public int bewWeite = 5;
-    public Vector2 bewDelta;
+    public int bewWeite = 5;    // die Reichweite der Bewegung des Gegeners
+    public Vector2 bewDelta;    // die Bewegung des Gegners
     int bewZiel = 1;
     Vector2 positionZiel;
     Vector2 positionQuelle;
+    Animator animator;
 
     // Start is called before the first frame update
     void Start( )
@@ -22,6 +23,7 @@ public class EnemyController : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>( );
         positionQuelle = rigidbody2d.position;
         positionZiel = positionQuelle + ( bewDelta * bewWeite );
+        animator = GetComponent<Animator>();
 
     }   // Ende: void Start
 
@@ -49,8 +51,11 @@ public class EnemyController : MonoBehaviour
         
         // die Bewegung ausführen mit Strecke pro Zeiteinheit
         float deltaZeit = Time.deltaTime;
-        position = rigidbody2d.position + 
-            ( bewDelta * bewZiel * speed * deltaZeit );
+        Vector2 locBewegung = bewDelta * bewZiel * speed * deltaZeit;
+        position = rigidbody2d.position + locBewegung;
+        // den Animator beschicken
+        animator.SetFloat( "Move X", locBewegung.x );
+        animator.SetFloat( "Move Y", locBewegung.y );
         // die Bewegung speichern
         rigidbody2d.MovePosition( position );
 
