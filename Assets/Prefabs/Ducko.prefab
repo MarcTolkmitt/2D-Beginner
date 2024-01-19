@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7577714517183832062}
   - component: {fileID: 2941526550395607124}
   - component: {fileID: 3609583352255162876}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ducko
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,6 +251,25 @@ MonoBehaviour:
     m_Flags: 0
   timeInvincible: 2
   timeAfterHeal: 1
+  projectilePrefab: {fileID: 2456765815906009260, guid: 9f15a07ef56db9f4593e2de691655250,
+    type: 3}
+  launchAction:
+    m_Name: Launch
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 8c5492bd-dd66-492e-b2e9-b24fb78bc8f9
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 2d73066e-35ba-44bd-9171-8884141802b8
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Launch
+      m_Flags: 0
+    m_Flags: 0
 --- !u!50 &7577714517183832062
 Rigidbody2D:
   serializedVersion: 4

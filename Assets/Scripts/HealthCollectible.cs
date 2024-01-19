@@ -10,7 +10,7 @@ public class HealthCollectible : MonoBehaviour
         PlayerController controller = 
             collision.GetComponent<PlayerController>();
 
-        Debug.Log( $"Name des Objekts: {gameObject.name} - > {gameObject.name[ 0 ]}" );
+        //Debug.Log( $"Name des Objekts: {gameObject.name} - > {gameObject.name[ 0 ]}" );
         // gesuchtes Skript existiert nur beim Player
         if ( controller != null )
         {

@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     Vector2 positionZiel;
     Vector2 positionQuelle;
     Animator animator;
+    bool aggressive = true;
 
     // Start is called before the first frame update
     void Start( )
@@ -35,6 +36,9 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate( )
     {
+        if ( !aggressive )
+            return;
+
         // Bewegung von Quelle zu Ziel und zurück
         if ( bewZiel == 1 )
         {   // so lange bis das Ziel nahe genug ist
@@ -70,5 +74,13 @@ public class EnemyController : MonoBehaviour
             player.ChangeHealth( -1 );
 
     }   // Ende: void OnCollisionEnter2D
+
+    public void Fix( )
+    {
+        aggressive = false;
+        rigidbody2d.simulated = false;
+        animator.SetTrigger( "Fixed" );
+
+    }   // Ende: public void Fix
 
 }   // Ende: public class EnemyController

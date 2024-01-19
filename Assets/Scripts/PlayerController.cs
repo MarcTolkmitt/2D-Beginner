@@ -32,6 +32,10 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     Vector2 moveDirection = new Vector2( 0, 0 );
 
+    // Einbindung von Prefabs und Aktionen
+    public GameObject projectilePrefab;
+    public InputAction launchAction;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +53,9 @@ public class PlayerController : MonoBehaviour
         currentHealth = maxHealth - 1;
         // animator
         animator = GetComponent<Animator>();
+        // the callback function gets special treatment
+        launchAction.Enable();
+        launchAction.performed += Launch;
 
     }   // Ende: void Start
 
@@ -96,11 +103,11 @@ public class PlayerController : MonoBehaviour
             moveDirection.Normalize();  // only working for pointing a direction
 
         }
-        animator.SetFloat( "Move X", moveDirection.x );
-        animator.SetFloat( "Move Y", moveDirection.y );
+        animator.SetFloat( "Look X", moveDirection.x );
+        animator.SetFloat( "Look Y", moveDirection.y );
         animator.SetFloat( "Speed", locMove.magnitude ); // on the normalized Vector
 
-        // noew for the rest 
+        // now for the rest 
         position = ( Vector2 ) rigidbody2d.position + locMove;
             
         // die Bewegung speichern
@@ -116,6 +123,7 @@ public class PlayerController : MonoBehaviour
                 return;
             isInvincible = true;
             damageCooldown = timeInvincible;
+            animator.SetTrigger( "Hit" );   // player was hit
        
         }
         else if ( amount > 0 )
@@ -139,6 +147,21 @@ public class PlayerController : MonoBehaviour
         return( currentHealth );
 
     }   // Ende: public int GetCurrentHealth
+
+    void Launch( InputAction.CallbackContext callback )
+    {
+        // create the gameobject
+        GameObject projectileObject = 
+            Instantiate( projectilePrefab, 
+            rigidbody2d.position + Vector2.up * 0.5f, 
+            Quaternion.identity);
+        // get its script and use its function
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch( moveDirection, 300 );
+        // aktivate the Animator
+        animator.SetTrigger( "Launch" );
+
+    }   // Ende: void Launch
 
 }   // Ende: public class PlayerController
 
