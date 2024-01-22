@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// gives reason to the character
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
-    // Geschwindigkeit
+    // speed
     public float geschw = 1f;
-    // Healthsystem
+    // healthsystem
     public int maxHealth = 5;
     int currentHealth;
 
-    // Eingabesysteme
+    // inputsystems
     public InputAction moveAction;
     public InputAction arrowAction;
     public InputAction xboxAction;
@@ -21,7 +22,7 @@ public class PlayerController : MonoBehaviour
     Vector2 arrow;
     Vector2 xbox;
     Vector2 position;
-    // Variables related to temporary invincibility
+    // variables related to temporary invincibility
     public float timeInvincible = 2.0f;
     bool isInvincible;
     float damageCooldown;
@@ -32,37 +33,44 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     Vector2 moveDirection = new Vector2( 0, 0 );
 
-    // Einbindung von Prefabs und Aktionen
+    // binding in of Prefabs and actions
     public GameObject projectilePrefab;
     public InputAction launchAction;
+    public InputAction talkAction;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start is called before the first frame update
+    /// </summary>
     void Start()
     {
-        // Framerateeinstellungen sind eher schlecht
+        // framerate settings are sort of bad
         // QualitySettings.vSyncCount = 0;
         // Application.targetFrameRate = frameRate;
 
-        // Eingabequellen
+        // inputsources
         moveAction.Enable();
         arrowAction.Enable();
         xboxAction.Enable();
-        // für Rigidbody und FixedUpdate
+        // for Rigidbody und FixedUpdate
         rigidbody2d = GetComponent<Rigidbody2D>();
-        // Healthsystem
+        // healthsystem
         currentHealth = maxHealth - 1;
         // animator
         animator = GetComponent<Animator>();
         // the callback function gets special treatment
         launchAction.Enable();
         launchAction.performed += Launch;
+        talkAction.Enable();
+        talkAction.performed += FindFriend;
 
-    }   // Ende: void Start
+    }   // end: void Start
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
-        // die Richtung direkt aus der moveAction bekommen
+        // get the direction right from the moveAction, ...
         move = moveAction.ReadValue<Vector2>();
         arrow = arrowAction.ReadValue<Vector2>();
         xbox = xboxAction.ReadValue<Vector2>();
@@ -85,11 +93,15 @@ public class PlayerController : MonoBehaviour
 
         }
 
-    }   // Ende: void Update
+    }   // end: void Update
 
+    /// <summary>
+    /// this is 'Update()' in the physics engine speed
+    /// <para/>won't be called as often as 'Update()'
+    /// </summary>
     void FixedUpdate( )
     {
-        // die Bewegung ausführen mit Strecke pro Zeiteinheit
+        // a time dependent move of the character
         float deltaZeit = Time.deltaTime;
         Vector2 locMove =
             ( move * 0.1f * geschw * deltaZeit ) +
@@ -107,14 +119,18 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat( "Look Y", moveDirection.y );
         animator.SetFloat( "Speed", locMove.magnitude ); // on the normalized Vector
 
-        // now for the rest 
+        // this is for the real move in the scene
         position = ( Vector2 ) rigidbody2d.position + locMove;
             
-        // die Bewegung speichern
+        // save the move
         rigidbody2d.MovePosition( position );
 
-    }   // Ende: void FixedUpdate
+    }   // end: void FixedUpdate
 
+    /// <summary>
+    /// enemies or health events alter the charcters health here
+    /// </summary>
+    /// <param name="amount">value change to happen</param>
     public void ChangeHealth( int amount  )
     {
         if ( amount < 0 )
@@ -140,14 +156,22 @@ public class PlayerController : MonoBehaviour
         float localHealth = currentHealth / (float)maxHealth;
         UIHandler.instance.SetHealthValue( localHealth );
 
-    }   // Ende: void ChangeHealth
+    }   // end: void ChangeHealth
 
+    /// <summary>
+    /// classic get-function
+    /// </summary>
+    /// <returns>the current health</returns>
     public int GetCurrentHealth()
     {
         return( currentHealth );
 
-    }   // Ende: public int GetCurrentHealth
+    }   // end: public int GetCurrentHealth
 
+    /// <summary>
+    /// shooting repair on command ( space key )
+    /// </summary>
+    /// <param name="callback"></param>
     void Launch( InputAction.CallbackContext callback )
     {
         // create the gameobject
@@ -161,7 +185,35 @@ public class PlayerController : MonoBehaviour
         // aktivate the Animator
         animator.SetTrigger( "Launch" );
 
-    }   // Ende: void Launch
+    }   // end: void Launch
 
-}   // Ende: public class PlayerController
+    /// <summary>
+    /// talking to NPCs will trigger their own text ( if you face them )
+    /// </summary>
+    /// <param name="callback">part of a callback ( listener )</param>
+    void FindFriend( InputAction.CallbackContext callback )
+    {
+        //Debug.Log( "key 't' pressed..." );
+        RaycastHit2D hit =
+            Physics2D.Raycast( rigidbody2d.position + ( Vector2.up * 0.2f ),
+                moveDirection,
+                1.5f,
+                LayerMask.GetMask( "NPC" ) );
+        if ( hit.collider != null )
+        {
+            Debug.Log( "Raycast has hit the object " + hit.collider.gameObject );
+            NonPlayerCharacter npc = hit.collider.GetComponent<NonPlayerCharacter>();
+            if ( npc != null )
+            {
+                Debug.Log( "npc's message: " + npc.npcMessage );
+                UIHandler.instance.DisplayDialogue( npc.npcMessage );
+
+            }
+
+        }
+    
+    }   // end: void FindFriend
+
+}   // end: public class PlayerController
+
 

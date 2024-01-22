@@ -1,32 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
+/// <summary>
+/// controls the enemies
+/// </summary>
 public class EnemyController : MonoBehaviour
 {
     public float speed = 1.0f;
-    public float minimaleDistanz = 0.1f;
+    public float minimalDistance = 0.1f;
     Rigidbody2D rigidbody2d;
     Vector2 position;
-    public int bewWeite = 5;    // die Reichweite der Bewegung des Gegeners
-    public Vector2 bewDelta;    // die Bewegung des Gegners
-    int bewZiel = 1;
-    Vector2 positionZiel;
-    Vector2 positionQuelle;
+    public int movDist = 5;    // total distance in unity meters
+    public Vector2 movDelta;    // free 2d-MoveVector
+    int moveTarget = 1;
+    Vector2 positionTarget;
+    Vector2 positionSource;
     Animator animator;
     bool aggressive = true;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start is called before the first frame update
+    /// </summary>
     void Start( )
     {
         // für Rigidbody und FixedUpdate
         rigidbody2d = GetComponent<Rigidbody2D>( );
-        positionQuelle = rigidbody2d.position;
-        positionZiel = positionQuelle + ( bewDelta * bewWeite );
+        positionSource = rigidbody2d.position;
+        positionTarget = positionSource + ( movDelta * movDist );
         animator = GetComponent<Animator>();
 
-    }   // Ende: void Start
+    }   // end: void Start
 
     // Update is called once per frame
     void Update( )
@@ -34,53 +36,64 @@ public class EnemyController : MonoBehaviour
 
     }   // Ende: void Update
 
+    /// <summary>
+    /// the physic engine's 'Update()' working in its own
+    /// framerate
+    /// </summary>
     void FixedUpdate( )
     {
         if ( !aggressive )
             return;
 
-        // Bewegung von Quelle zu Ziel und zurück
-        if ( bewZiel == 1 )
-        {   // so lange bis das Ziel nahe genug ist
-            if ( Vector2.Distance( position, positionZiel ) < minimaleDistanz )
-                bewZiel = -1;
+        // movement from source to target and back
+        if ( moveTarget == 1 )
+        {   // move as long as distance is too big
+            if ( Vector2.Distance( position, positionTarget ) < minimalDistance )
+                moveTarget = -1;
 
         }
-        else if ( bewZiel == -1 )
-        {   // sol lange bis die Quelle nahe genug ist
-            if ( Vector2.Distance( position, positionQuelle ) < minimaleDistanz )
-                bewZiel = 1;
+        else if ( moveTarget == -1 )
+        {   // movement back towards the source
+            if ( Vector2.Distance( position, positionSource ) < minimalDistance )
+                moveTarget = 1;
         
         }
         
-        // die Bewegung ausführen mit Strecke pro Zeiteinheit
-        float deltaZeit = Time.deltaTime;
-        Vector2 locBewegung = bewDelta * bewZiel * speed * deltaZeit;
-        position = rigidbody2d.position + locBewegung;
-        // den Animator beschicken
-        animator.SetFloat( "Move X", locBewegung.x );
-        animator.SetFloat( "Move Y", locBewegung.y );
-        // die Bewegung speichern
+        // the movement relativ to the time passed
+        Vector2 locMove = 
+            movDelta * moveTarget * speed * Time.deltaTime;
+        position = rigidbody2d.position + locMove;
+        // inform the Animator
+        animator.SetFloat( "Move X", locMove.x );
+        animator.SetFloat( "Move Y", locMove.y );
+        // save the movement
         rigidbody2d.MovePosition( position );
 
-    }   // Ende: void FixedUpdate
+    }   // end: void FixedUpdate
 
+    /// <summary>
+    /// using the physic engine to hit the player
+    /// </summary>
+    /// <param name="collision"></param>
     void OnCollisionEnter2D( Collision2D collision )
     {
-        Debug.Log( "Enemy -> Kollision erkannt: " + collision );
+        //Debug.Log( "enemy -> got a collision: " + collision );
         PlayerController player =
             collision.gameObject.GetComponent<PlayerController>();
         if ( player != null )
             player.ChangeHealth( -1 );
 
-    }   // Ende: void OnCollisionEnter2D
+    }   // end: void OnCollisionEnter2D
 
+    /// <summary>
+    /// actionfunction for the character's weapon
+    /// </summary>
     public void Fix( )
     {
         aggressive = false;
         rigidbody2d.simulated = false;
         animator.SetTrigger( "Fixed" );
 
-    }   // Ende: public void Fix
+    }   // end: public void Fix
 
-}   // Ende: public class EnemyController
+}   // end: public class EnemyController

@@ -270,6 +270,23 @@ MonoBehaviour:
       m_Action: Launch
       m_Flags: 0
     m_Flags: 0
+  talkAction:
+    m_Name: Talk
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 4dd120aa-d66f-4e23-9d07-db82e2916114
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: cb950205-1a45-4bca-8097-893340fb3bcf
+      m_Path: <Keyboard>/t
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Talk
+      m_Flags: 0
+    m_Flags: 0
 --- !u!50 &7577714517183832062
 Rigidbody2D:
   serializedVersion: 4

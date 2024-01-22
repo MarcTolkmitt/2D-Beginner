@@ -1,22 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
+/// <summary>
+/// script for the repair magic to happen
+/// </summary>
 public class Projectile : MonoBehaviour
 {
     Rigidbody2D thisRiBody;
     public float seconds = 5f;
     float lifeLength;
 
-    // Awake happens on Prefab init before Start()
+    /// <summary>
+    /// Awake happens on Prefab init before Start()
+    /// </summary>
     void Awake()
     {
         thisRiBody = GetComponent<Rigidbody2D>();
         lifeLength = Time.time;
 
-    }   // Ende: void Awake
+    }   // end: void Awake
 
+    /// <summary>
+    /// implementing a timer for the Prefabs lifetime
+    /// </summary>
     void Update( )
     {
         // a countdown for the lifespan is better
@@ -27,14 +32,24 @@ public class Projectile : MonoBehaviour
 
         }
 
-    }   // Ende: void Update
+    }   // end: void Update
 
+    /// <summary>
+    /// after the creation the Prefab is being 
+    /// given force to move
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="force"></param>
     public void Launch( Vector2 direction, float force )
     {
         thisRiBody.AddForce( direction * force );
 
-    }   // Ende: public void Launch
+    }   // end: public void Launch
 
+    /// <summary>
+    /// using the physics engine for collision - here a repair
+    /// </summary>
+    /// <param name="collision">the gameObject being hit</param>
     void OnCollisionEnter2D( Collision2D collision )
     {
         //Debug.Log( "Projectile collision with " + collision.gameObject );
@@ -47,7 +62,7 @@ public class Projectile : MonoBehaviour
         }
         Destroy( gameObject );
 
-    }   // Ende: void OnCollisionEnter2D
+    }   // end: void OnCollisionEnter2D
 
-}   // Ende: public class Projectile
+}   // end: public class Projectile
 
