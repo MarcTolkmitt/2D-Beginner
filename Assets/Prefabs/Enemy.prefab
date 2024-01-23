@@ -123,7 +123,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.61051613}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.42, y: 2.33}
     newSize: {x: 1.42, y: 2.33}
     adaptiveTilingThreshold: 0.5
@@ -145,10 +145,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5718e54af4a04ed4d89ce75229c24f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyHitAudioClip: {fileID: 8300000, guid: 683e01d57e63fe749866ca4fd3cc424c, type: 3}
   speed: 1
-  minimaleDistanz: 0.1
-  bewWeite: 5
-  bewDelta: {x: 0, y: 0}
+  minimalDistance: 0.1
+  movDist: 5
+  movDelta: {x: 0, y: 0}
 --- !u!50 &3231814969289243308
 Rigidbody2D:
   serializedVersion: 4

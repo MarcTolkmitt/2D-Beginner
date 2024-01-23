@@ -6,6 +6,9 @@ using UnityEngine;
 /// </summary>
 public class HealthCollectible : MonoBehaviour
 {
+    // audio
+    public AudioClip healthCollectibleAudioClip;
+    
     /// <summary>
     /// the seen sprite works as trigger and this is handled
     /// in this script via the physics engine
@@ -24,9 +27,17 @@ public class HealthCollectible : MonoBehaviour
             if ( controller.GetCurrentHealth() < controller.maxHealth )
             {
                 if ( gameObject.name[ 0 ] == '1' )
+                {
                     controller.ChangeHealth( 1 );
+                    controller.PlaySound( healthCollectibleAudioClip );
+
+                }
                 else if ( gameObject.name[ 0 ] == '2' )
+                {
                     controller.ChangeHealth( 2 );
+                    controller.PlaySound( healthCollectibleAudioClip );
+                    
+                }
                 Destroy( gameObject );
 
             }

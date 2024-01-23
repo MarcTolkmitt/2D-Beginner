@@ -5,6 +5,9 @@ using UnityEngine;
 /// </summary>
 public class EnemyController : MonoBehaviour
 {
+    // audio
+    public AudioClip enemyHitAudioClip;
+    
     public float speed = 1.0f;
     public float minimalDistance = 0.1f;
     Rigidbody2D rigidbody2d;
@@ -27,6 +30,7 @@ public class EnemyController : MonoBehaviour
         positionSource = rigidbody2d.position;
         positionTarget = positionSource + ( movDelta * movDist );
         animator = GetComponent<Animator>();
+        enemyHitAudioClip = GetComponent<AudioClip>( );
 
     }   // end: void Start
 
@@ -81,7 +85,11 @@ public class EnemyController : MonoBehaviour
         PlayerController player =
             collision.gameObject.GetComponent<PlayerController>();
         if ( player != null )
+        {
             player.ChangeHealth( -1 );
+            player.PlaySound( enemyHitAudioClip );
+
+        }
 
     }   // end: void OnCollisionEnter2D
 

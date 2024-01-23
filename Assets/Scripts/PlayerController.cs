@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     // healthsystem
     public int maxHealth = 5;
     int currentHealth;
-
     // inputsystems
     public InputAction moveAction;
     public InputAction arrowAction;
@@ -32,11 +31,12 @@ public class PlayerController : MonoBehaviour
     // additions for the animator
     Animator animator;
     Vector2 moveDirection = new Vector2( 0, 0 );
-
     // binding in of Prefabs and actions
     public GameObject projectilePrefab;
     public InputAction launchAction;
     public InputAction talkAction;
+    // audio
+    AudioSource audioSource;
 
     /// <summary>
     /// Start is called before the first frame update
@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
         launchAction.performed += Launch;
         talkAction.Enable();
         talkAction.performed += FindFriend;
+        // the audio
+        audioSource = GetComponent<AudioSource>();
 
     }   // end: void Start
 
@@ -213,6 +215,16 @@ public class PlayerController : MonoBehaviour
         }
     
     }   // end: void FindFriend
+
+    /// <summary>
+    /// plays once the given AudioClip
+    /// </summary>
+    /// <param name="clip">sound to be played</param>
+    public void PlaySound( AudioClip clip )
+    {
+        audioSource.PlayOneShot( clip );
+
+    }   // end: public void PlaySound
 
 }   // end: public class PlayerController
 
