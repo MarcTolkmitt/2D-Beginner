@@ -98,6 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba979f46ad610a64a9920c0bf1d4d41d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageZoneAudioClip: {fileID: 8300000, guid: 173a14cf06354c643b46b235f2a4f974, type: 3}
+  playPause: 1
 --- !u!61 &-1854879461573144072
 BoxCollider2D:
   m_ObjectHideFlags: 0

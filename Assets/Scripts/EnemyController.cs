@@ -7,6 +7,9 @@ public class EnemyController : MonoBehaviour
 {
     // audio
     public AudioClip enemyHitAudioClip;
+    public float playPause = 1.0f;
+    float playTime = 0f;
+    AudioSource enemyHitAudioSource;
     
     public float speed = 1.0f;
     public float minimalDistance = 0.1f;
@@ -31,12 +34,17 @@ public class EnemyController : MonoBehaviour
         positionTarget = positionSource + ( movDelta * movDist );
         animator = GetComponent<Animator>();
         enemyHitAudioClip = GetComponent<AudioClip>( );
+        enemyHitAudioSource = GetComponent<AudioSource>( );
 
     }   // end: void Start
 
     // Update is called once per frame
     void Update( )
     {
+        // audio sound countdown
+        if ( playTime > 0 )
+            playTime -= Time.deltaTime;
+
 
     }   // Ende: void Update
 
@@ -81,13 +89,20 @@ public class EnemyController : MonoBehaviour
     /// <param name="collision"></param>
     void OnCollisionEnter2D( Collision2D collision )
     {
-        //Debug.Log( "enemy -> got a collision: " + collision );
         PlayerController player =
             collision.gameObject.GetComponent<PlayerController>();
+        Debug.Log( "enemy -> got a collision with player: " 
+            + ( player != null ) );
         if ( player != null )
         {
             player.ChangeHealth( -1 );
-            player.PlaySound( enemyHitAudioClip );
+            if ( playTime <= 0 )
+            {
+                playTime = playPause;
+                player.PlaySound( enemyHitAudioClip );
+
+            }
+
 
         }
 
@@ -101,6 +116,7 @@ public class EnemyController : MonoBehaviour
         aggressive = false;
         rigidbody2d.simulated = false;
         animator.SetTrigger( "Fixed" );
+        enemyHitAudioSource.Stop();
 
     }   // end: public void Fix
 

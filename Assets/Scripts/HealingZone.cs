@@ -6,6 +6,21 @@ using UnityEngine;
 /// </summary>
 public class HealingZone : MonoBehaviour
 {
+    // audio
+    public AudioClip damageZoneAudioClip;
+    public float playPause = 1.0f;
+    float playTime = 0;
+
+    // Update is called once per frame
+    void Update( )
+    {
+        // audio sound countdown
+        if ( playTime > 0 )
+            playTime -= Time.deltaTime;
+
+
+    }   // Ende: void Update
+
     /// <summary>
     /// the seen sprite works as trigger and this is handled
     /// in this script via the physics engine
@@ -24,10 +39,27 @@ public class HealingZone : MonoBehaviour
             if ( controller.GetCurrentHealth( ) < controller.maxHealth )
             {
                 if ( gameObject.name[ 0 ] == '1' )
+                {
                     controller.ChangeHealth( 1 );
+                    if ( playTime <= 0 )
+                    {
+                        playTime = playPause;
+                        controller.PlaySound( damageZoneAudioClip );
+
+                    }
+
+                }
                 else if ( gameObject.name[ 0 ] == '2' )
+                {
                     controller.ChangeHealth( 2 );
-                //Destroy( gameObject );
+                    if ( playTime <= 0 )
+                    {
+                        playTime = playPause;
+                        controller.PlaySound( damageZoneAudioClip );
+
+                    }
+
+                }
 
             }
 
