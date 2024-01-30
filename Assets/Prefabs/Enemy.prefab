@@ -146,12 +146,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5718e54af4a04ed4d89ce75229c24f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyGetHitAudioClip: {fileID: 8300000, guid: 683e01d57e63fe749866ca4fd3cc424c,
+    type: 3}
   enemyHitAudioClip: {fileID: 8300000, guid: c7d3a91ac32abbe47a8931a8ffc37bc6, type: 3}
   playPause: 1
   speed: 1
   minimalDistance: 0.1
   movDist: 5
   movDelta: {x: 0, y: 0}
+  playerObj: {fileID: 7444013256515358043, guid: 1a4ffb7db46d97f42894d5f542228ea6,
+    type: 3}
 --- !u!50 &3231814969289243308
 Rigidbody2D:
   serializedVersion: 4

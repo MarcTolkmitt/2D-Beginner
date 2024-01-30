@@ -6,10 +6,11 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     // audio
+    public AudioClip enemyGetHitAudioClip;
     public AudioClip enemyHitAudioClip;
     public float playPause = 1.0f;
     float playTime = 0f;
-    AudioSource enemyHitAudioSource;
+    AudioSource enemyAudioSource;
     
     public float speed = 1.0f;
     public float minimalDistance = 0.1f;
@@ -22,6 +23,9 @@ public class EnemyController : MonoBehaviour
     Vector2 positionSource;
     Animator animator;
     bool aggressive = true;
+    // for the sound
+    public GameObject playerObj;
+    PlayerController playerController;
 
     /// <summary>
     /// Start is called before the first frame update
@@ -33,8 +37,11 @@ public class EnemyController : MonoBehaviour
         positionSource = rigidbody2d.position;
         positionTarget = positionSource + ( movDelta * movDist );
         animator = GetComponent<Animator>();
+        enemyGetHitAudioClip = GetComponent<AudioClip>( );
         enemyHitAudioClip = GetComponent<AudioClip>( );
-        enemyHitAudioSource = GetComponent<AudioSource>( );
+        enemyAudioSource = GetComponent<AudioSource>( );
+        //playerObj = GetComponent<GameObject>( );
+        playerController = playerObj.GetComponent<PlayerController>( );
 
     }   // end: void Start
 
@@ -116,7 +123,8 @@ public class EnemyController : MonoBehaviour
         aggressive = false;
         rigidbody2d.simulated = false;
         animator.SetTrigger( "Fixed" );
-        enemyHitAudioSource.Stop();
+        enemyAudioSource.Stop();
+        playerController.PlaySound( enemyGetHitAudioClip );
 
     }   // end: public void Fix
 
